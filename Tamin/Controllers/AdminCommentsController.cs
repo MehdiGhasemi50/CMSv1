@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
 using Tamin.Models;
+using System.Linq;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Tamin.Controllers
 {
@@ -10,16 +13,40 @@ namespace Tamin.Controllers
     public class AdminCommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _dbContext;
+
+        public ApplicationDbContext DbContext
+        {
+            get
+            {
+                return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _dbContext = value;
+            }
+        }
+
+        public AdminCommentsController()
+        {
+
+        }
+
+        public AdminCommentsController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         // GET: AdminComments
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+
         {
-            //var comments = db.Comments.Include(c => c.Parent);
-
             var comments = db.Comments.Include(c => c.posts).Include(c => c.Parent);
-
-            return View(await comments.ToListAsync());
+            return View(DbContext.Comments.ToList());
         }
+
+       
+       
 
         // GET: AdminComments/Details/5
         public async Task<ActionResult> Details(int? id)

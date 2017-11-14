@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using Tamin.Models;
 using System.IO;
+using Microsoft.AspNet.Identity.Owin;
+using System.Linq;
 
 namespace Tamin.Controllers
 {
@@ -14,12 +16,35 @@ namespace Tamin.Controllers
     public class AdminPostGroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext _dbContext;
 
         // GET: AdminPostGroups
-        public async Task<ActionResult> Index()
+        public ApplicationDbContext DbContext
         {
-            var postGroups = db.PostGroups.Include(p => p.Parent);
-            return View(await postGroups.ToListAsync());
+            get
+            {
+                return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _dbContext = value;
+            }
+        }
+
+        public AdminPostGroupsController()
+        {
+
+        }
+
+        public AdminPostGroupsController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        // GET: AdminPosts
+        public ActionResult Index()
+        {
+            return View(DbContext.PostGroups.ToList());
         }
 
         // GET: AdminPostGroups/Details/5

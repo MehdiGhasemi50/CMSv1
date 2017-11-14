@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/bundles/mybootstrap")
     @Styles.Render("~/bundles/mybeyond")
+   
     <link href="~/css_woff/style.css" rel="stylesheet" />
 </head>
 <body>
@@ -208,16 +209,19 @@
     
 
 @Scripts.Render("~/bundles/myadminscript")
+    @Styles.Render("~/Content/datatables")
+ @Scripts.Render("~/bundles/datatables")
+   
     
 
 @RenderSection("scripts", required: false)
-    <script>
+    @*<script>
         $(document).ready(function () {
             EditableTable.init();
             $("form").addClass("form-horizontal").attr("role", "form");
             $("#buttons * *").addClass("btn btn-primary");
             $('input[type="text"],input[type="datetime"],input[type="password"],textarea,select').addClass("form-control");
         });
-    </script>
+    </script>*@
 </body>
 </html>

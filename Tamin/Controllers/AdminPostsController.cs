@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Tamin.Models;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Tamin.Controllers
 {
@@ -17,11 +18,34 @@ namespace Tamin.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AdminPosts
-        public async Task<ActionResult> Index()
+        private ApplicationDbContext _dbContext;
+
+        public ApplicationDbContext DbContext
         {
-            var posts = db.Posts.Include(p => p.ApplicationUser).Include(p => p.PostGroups).OrderBy(p=>p.PostDate).ThenBy(p=>p.Modifiedat);
-            return View(await posts.ToListAsync());
+            get
+            {
+                return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _dbContext = value;
+            }
+        }
+
+        public AdminPostsController()
+        {
+
+        }
+
+        public AdminPostsController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        // GET: AdminPosts
+        public  ActionResult Index()
+        {
+            return View(DbContext.Posts.ToList());
         }
 
         public ActionResult ShowByGroup(int? id)

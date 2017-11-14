@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Tamin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Linq;
 
 namespace Tamin.Controllers
 {
@@ -22,12 +23,36 @@ namespace Tamin.Controllers
             }
         }
         // GET: AdminUsers
-     //   [Authorize]
-        public async Task<ActionResult> Index()
+        //   [Authorize]
+        private ApplicationDbContext _dbContext;
+
+        public ApplicationDbContext DbContext
         {
-            return View(await db.Users.ToListAsync());
+            get
+            {
+                return _dbContext ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _dbContext = value;
+            }
         }
 
+        public AdminUsersController()
+        {
+
+        }
+
+        public AdminUsersController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        // GET: AdminPosts
+        public ActionResult Index()
+        {
+            return View(DbContext.Users.ToList());
+        }
 
         // GET: AdminUsers/Create
         public ActionResult Create()

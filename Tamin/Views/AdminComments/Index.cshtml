@@ -1,114 +1,121 @@
-﻿
-@model IEnumerable<Tamin.Models.Comment>
+﻿@model IEnumerable<Tamin.Models.Comment>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "مدیریت کامنت ها";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<div class="adv-table editable-table">
+    <div class="clearfix">
+        <div class="btn-group">
+            @Html.ActionLink("ایجاد مطلب جدید", "Create", null, new { @class = "btn btn-success" })
 
-<section class="panel">
-    <header class="panel-heading">
-        فهرست
-        <span class="tools pull-left">
-            <a class="fa fa-chevron-down" href="javascript:;"></a>
-        </span>
-    </header>
-    <div class="panel-body">
-
-        <div class="space15"></div>
-        <table class="table editable-table table-hover table-bordered" id="editable-sample">
-            <thead>
-            <tr>
-
-                <th>
-                    @Html.DisplayName("نام فرستنده")                
-
-                </th>
-                <th>
-                    @Html.DisplayName("تاریخ ارسال")                
-                </th>
-                <th>
-                    @Html.DisplayName("وضعیت نمایش")
-                </th>                
-                <th>
-                    @Html.DisplayName("عنوان نظر")
-                </th>
-                <th>
-                    @Html.DisplayName("آدرس ایمیل")
-                </th>
-                <th>@Html.DisplayName("دستورات")</th>
-
-
-               
-            </tr>
-            </thead>
-            <tbody>
-            @if (Model.Count() == 0)
-            {
-                <tr><td colspan="8" class="text-center">هیچ داده ای جهت نمایش وجود ندارد</td></tr>
-            }
-            else
-            {
-                foreach (var item in Model)
-                {
-                    <tr class="">
-
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Author)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment_Date)
-                        </td>
-
-                        <td>
-                            @*@Html.DisplayFor(modelItem => item.CommentIsActive)
-                            @if (item.CommentIsActive == true)
-                            {
-                                @:تایید
-                            }
-                            else
-                            {
-                                @:انتظار
-                            }*@
-
-                            <div class="col-xs-4">
-
-                                @*<label class="pull-right">*@
-                                @Html.CheckBoxFor(model => item.CommentIsActive, new { @class = "checkbox-slider slider-icon colored-blue", @type = "checkbox" })
-                                <span class="text"></span>
-                                @*</label>*@
-                            </div>
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment_title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Author_Email)
-                        </td>
-                        <td>
-
-
-                            @Html.ActionLink("مشاهده", "Edit", new { id = item.Comment_ID }, new { @class = "btn btn-primary btn-xs" })
-
-                            @Html.ActionLink("حذف", "Delete", new { id = item.Comment_ID }, new { @class = "btn btn-danger btn-xs" })
-
-                           
-                               
-                                    
-                                   
-                                      
-                                       @Html.CheckBoxFor(modelItem => item.CommentIsActive)
-                                        
-                            
-                        </td>
-                    </tr>
-                }
-            }
-                
-            </tbody>
-        </table>
+        </div>
     </div>
-</section>
+</div>
+<div class="col-md-12">
+    <br />
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary list-panel" id="list-panel">
+            <div class="panel-heading list-panel-heading">
+                <h1 class="panel-title list-panel-title">مدیریت کامنت ها</h1>
+            </div>
+            <div class="panel-body">
+                <table id="assets-data-table"
+                       class="table table-striped table-bordered"
+                       style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("نام فرستنده")
+
+                            </th>
+                            <th>
+                                @Html.DisplayName("تاریخ ارسال")
+                            </th>
+                            <th>
+                                @Html.DisplayName("وضعیت نمایش")
+                            </th>
+                            <th>
+                                @Html.DisplayName("عنوان نظر")
+                            </th>
+                            <th>
+                                @Html.DisplayName("آدرس ایمیل")
+                            </th>
+                            <th>@Html.DisplayName(" ")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @if (Model.Count() == 0)
+            {
+                        <tr><td colspan="8" class="text-center">هیچ داده ای جهت نمایش وجود ندارد</td></tr>
+                      }
+                      else
+                      {
+                          foreach (var item in Model)
+                          {
+                            <tr class="">
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Author)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Comment_Date)
+                                </td>
+
+                                <td>
+                                   
+
+                                    <div class="col-xs-4">
+
+                                        @*<label class="pull-right">*@
+                                        @Html.CheckBoxFor(model => item.CommentIsActive, new { @class = "checkbox-slider slider-icon colored-blue", @type = "checkbox" })
+                                        <span class="text"></span>
+                                        @*</label>*@
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Comment_title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Author_Email)
+                                </td>
+                                <td>
+
+
+                                    @Html.ActionLink("مشاهده", "Edit", new { id = item.Comment_ID }, new { @class = "btn btn-primary btn-xs" })
+
+                                    @Html.ActionLink("حذف", "Delete", new { id = item.Comment_ID }, new { @class = "btn btn-danger btn-xs" })
+
+
+
+
+
+
+                                    @Html.CheckBoxFor(modelItem => item.CommentIsActive)
+
+
+                                </td>
+                            </tr>
+                          }
+                      }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+     $(document).ready(function () {
+
+         $('#assets-data-table').DataTable();
+     });
+    </script>
+}
